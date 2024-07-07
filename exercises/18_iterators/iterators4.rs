@@ -1,12 +1,10 @@
 fn factorial(num: u8) -> u64 {
-    // TODO: Complete this function to return the factorial of `num`.
-    // Do not use:
-    // - early returns (using the `return` keyword explicitly)
-    // Try not to use:
-    // - imperative style loops (for/while)
-    // - additional variables
-    // For an extra challenge, don't use:
-    // - recursion
+    if num < 2 {
+        1
+    } else {
+        let arr = (1..((num+1) as u64));
+        arr.product()
+    }
 }
 
 fn main() {

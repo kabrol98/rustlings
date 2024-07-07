@@ -1,4 +1,3 @@
-// TODO: Fix the compiler error.
 fn main() {
     let mut x: i32 = 3;
     println!("Number {x}");

@@ -1,8 +1,7 @@
 fn main() {
-    let mut res = 42;
-    let option = Some(12);
-    // TODO: Fix the Clippy lint.
-    for x in option {
+    let mut res: i32 = 42;
+    let option: Option<i32> = Some(12);
+    if let Some(x) = option {
         res += x;
     }
 
