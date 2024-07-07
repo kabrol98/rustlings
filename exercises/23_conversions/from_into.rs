@@ -63,6 +63,12 @@ fn main() {
     // Since `From` is implemented for Person, we are able to use `Into`.
     let p2: Person = "Gerald,70".into();
     println!("{p2:?}");
+
+    // Intentionally read name and age fields in order to suppress warnings from compiler
+    let p1_name: String = p1.name;
+    let p1_age: u8 = p1.age;
+    println!("{p1_name:?}");
+    println!("{p1_age:?}");
 }
 
 #[cfg(test)]

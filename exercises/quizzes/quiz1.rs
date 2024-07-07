@@ -6,8 +6,6 @@
 // Mary is buying apples. The price of an apple is calculated as follows:
 // - An apple costs 2 rustbucks.
 // - If Mary buys more than 40 apples, each apple only costs 1 rustbuck!
-// TODO: Write a function that calculates the price of an order of apples given
-// the quantity bought.
 
 // Put your function here!
 fn calculate_price_of_apples(num_apples: i32) -> i32 {
@@ -20,6 +18,7 @@ fn calculate_price_of_apples(num_apples: i32) -> i32 {
 
 fn main() {
     // You can optionally experiment here.
+    println!("{}", calculate_price_of_apples(35));
 }
 
 // Don't change the tests!

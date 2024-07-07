@@ -14,6 +14,10 @@ impl Queue {
             second_half: vec![6, 7, 8, 9, 10],
         }
     }
+
+    fn print_length(&self) -> () {
+        println!("Length: {}", self.length);
+    }
 }
 
 fn send_tx(q: Queue, tx: mpsc::Sender<u32>) {
@@ -36,7 +40,19 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) {
 }
 
 fn main() {
-    // You can optionally experiment here.
+    let (tx, rx) = mpsc::channel();
+    let queue = Queue::new();
+    queue.print_length();
+
+    send_tx(queue, tx);
+
+    let mut total_received: u32 = 0;
+    for received in rx {
+        println!("Got: {received}");
+        total_received += 1;
+    }
+
+    println!("Total number of received values: {total_received}");
 }
 
 #[cfg(test)]

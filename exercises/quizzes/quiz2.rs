@@ -38,7 +38,6 @@ mod my_module {
         s.to_owned() + &"bar".repeat(*times)
     }
 
-    // TODO: Complete the function.
     pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
         let mut output: Vec<String> = Vec::new();
 
@@ -56,11 +55,21 @@ mod my_module {
 
 fn main() {
     // You can optionally experiment here.
+
+    let input: Vec<(String, Command)> = vec![
+        ("hello".to_string(), Command::Uppercase),
+        (" all roads lead to rome! ".to_string(), Command::Trim),
+        ("foo".to_string(), Command::Append(1)),
+        ("bar".to_string(), Command::Append(5)),
+    ];
+
+    let output: Vec<String> = my_module::transformer(input);
+    println!("{:?}", output);
+    // Expected output: ["HELLO", "all roads lead to rome!", "foobar", "barbarbarbarbarbar"]
 }
 
 #[cfg(test)]
 mod tests {
-    // TODO: What do we need to import to have `transformer` in scope?
     use super::Command;
     use crate::my_module::transformer;
 

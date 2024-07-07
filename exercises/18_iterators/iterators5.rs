@@ -53,7 +53,43 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
 }
 
 fn main() {
+    use Progress::*;
     // You can optionally experiment here.
+    let mut map = HashMap::new();
+    map.insert(String::from("variables1"), Complete);
+    map.insert(String::from("functions1"), Complete);
+    map.insert(String::from("hashmap1"), Complete);
+    map.insert(String::from("arc1"), Some);
+    map.insert(String::from("as_ref_mut"), None);
+    map.insert(String::from("from_str"), None);
+
+    let mut other = HashMap::new();
+    other.insert(String::from("variables2"), Complete);
+    other.insert(String::from("functions2"), Complete);
+    other.insert(String::from("if1"), Complete);
+    other.insert(String::from("from_into"), None);
+    other.insert(String::from("try_from_into"), None);
+
+    let progress_states = [Progress::Complete, Progress::Some, Progress::None];
+    for progress_state in progress_states {
+        assert_eq!(
+            count_for(&map, progress_state),
+            count_iterator(&map, progress_state),
+        );
+        assert_eq!(
+            count_for(&map, progress_state),
+            count_iterator(&map, progress_state),
+        );
+    }
+
+    let collection = vec![map, other];
+
+    for progress_state in progress_states {
+        assert_eq!(
+            count_collection_for(&collection, progress_state),
+            count_collection_iterator(&collection, progress_state),
+        );
+    }
 }
 
 #[cfg(test)]

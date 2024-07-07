@@ -29,6 +29,13 @@ impl Planet {
 
 fn main() {
     // You can optionally experiment here.
+    // Example usage:
+    let sun = Rc::new(Sun);
+    let earth = Planet::Earth(Rc::clone(&sun));
+    earth.details();
+    println!("reference count = {}", Rc::strong_count(&sun)); // 2
+    drop(earth);
+    println!("reference count = {}", Rc::strong_count(&sun)); // 1 reference
 }
 
 #[cfg(test)]
