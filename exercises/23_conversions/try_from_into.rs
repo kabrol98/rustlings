@@ -5,7 +5,10 @@
 // https://doc.rust-lang.org/std/convert/trait.TryFrom.html
 
 #![allow(clippy::useless_vec)]
-use std::convert::{TryFrom, TryInto};
+use std::{
+    borrow::Borrow,
+    convert::{TryFrom, TryInto},
+};
 
 #[derive(Debug, PartialEq)]
 struct Color {
@@ -23,27 +26,67 @@ enum IntoColorError {
     IntConversion,
 }
 
-// TODO: Tuple implementation.
+fn validate_conversion<I>(iter: I) -> Result<(), IntoColorError>
+where
+    I: IntoIterator,
+    I::Item: std::borrow::Borrow<i16>,
+{
+    for val in iter {
+        let i_val: i16 = *val.borrow();
+        // Bounds check
+        if !(0..=255).contains(&i_val) {
+            return Err(IntoColorError::IntConversion);
+        }
+    }
+    Ok(())
+}
+
 // Correct RGB color values must be integers in the 0..=255 range.
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
 
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        if !(0..=255).contains(&tuple.0)
+            || !(0..=255).contains(&tuple.1)
+            || !(0..=255).contains(&tuple.2)
+        {
+            return Err(IntoColorError::IntConversion);
+        }
+        Ok(Color {
+            red: tuple.0 as u8,
+            green: tuple.1 as u8,
+            blue: tuple.2 as u8,
+        })
+    }
 }
 
-// TODO: Array implementation.
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        validate_conversion(arr)?;
+        Ok(Color {
+            red: arr[0] as u8,
+            green: arr[1] as u8,
+            blue: arr[2] as u8,
+        })
+    }
 }
 
-// TODO: Slice implementation.
-// This implementation needs to check the slice length.
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        validate_conversion(slice)?;
+        Ok(Color {
+            red: slice[0] as u8,
+            green: slice[1] as u8,
+            blue: slice[2] as u8,
+        })
+    }
 }
 
 fn main() {
